@@ -1,5 +1,13 @@
 # INF1070ETE2024-LAB5
 
+# 0. Notes :
+
+```sh
+abc
+...
+```
+`...` indique que l'affichage continue mais est trop long !
+
 # 1. Setup : 
 
 Pour simplifer le travail, nous allons créer une variable qui permet de raccourcir les commandes : 
@@ -73,10 +81,15 @@ grep \'s$ $dict
 man's
 traveller's
 ```
+```sh 
+grep "'s$" $dict
+man's
+traveller's
+```
 
 6.
 ```sh
-grep ^chat $dict | column -c 100
+grep ^chat $dict | column -c 100 ­> chat.txt
 chat                    chatonne                chatouillassions        chatoyâmes
 chateaubriand           chatonné                chatouillât             chatoyant
 chateaubriands          chatonnée               chatouillâtes           chatoyante
@@ -145,17 +158,17 @@ grep -v '^#' countryInfo-clean.txt > countryInfo-clean-clean.txt
 ### 4. Recherche sur les Pays
 1. 
 ```sh
-cut -f 2,8 countryInfo-clean-clean.txt | sort -k2 -nr | head -10
-CHN     1411778724
-IND     1352617328
-USA     327167434
-IDN     267663435
-PAK     212215030
-BRA     209469333
-NGA     195874740
-BGD     161356039
-RUS     144478050
-JPN     126529100
+cut -f 2,8 countryInfo-clean-clean.txt | sort -k2 -nr | cut -f 1 | head -10
+CHN     
+IND     
+USA     
+IDN     
+PAK     
+BRA     
+NGA     
+BGD     
+RUS     
+JPN     
 ```
 `-f 2,8` : spécifie de couper les colonnes 2 et 8. 
 `-k2` : spécifie la 2e colonne.
@@ -163,48 +176,48 @@ JPN     126529100
 
 Alternative : 
 ```sh 
-cut -f 2-8 countryInfo-clean-clean.txt | cut --complement -f 2-6 | sort -k2 -nr | head -10
-CHN     1411778724
-IND     1352617328
-USA     327167434
-IDN     267663435
-PAK     212215030
-BRA     209469333
-NGA     195874740
-BGD     161356039
-RUS     144478050
-JPN     126529100
+cut -f 2-8 countryInfo-clean-clean.txt | cut --complement -f 2-6 | sort -k2 -nr | cut -f 1 | head -10
+CHN     
+IND     
+USA     
+IDN     
+PAK     
+BRA     
+NGA     
+BGD     
+RUS     
+JPN     
 ```
 
 2. 
 ```sh
-cut -f 2,7 countryInfo-clean-clean.txt | sort -k2 -nr | head -20
-RUS     17100000
-ATA     14000000
-CAN     9984670
-USA     9629091
-CHN     9596960
-BRA     8511965
-AUS     7686850
-IND     3287590
-ARG     2766890
-KAZ     2717300
-DZA     2381740
-COD     2345410
-GRL     2166086
-MEX     1972550
-SAU     1960582
-IDN     1919440
-SDN     1861484
-LBY     1759540
-IRN     1648000
-MNG     1565000
+cut -f 2,7 countryInfo-clean-clean.txt | sort -k2 -nr | cut -f 1 | head -20
+RUS     
+ATA     
+CAN     
+USA     
+CHN     
+BRA     
+AUS     
+IND     
+ARG     
+KAZ     
+DZA     
+COD     
+GRL     
+MEX     
+SAU     
+IDN     
+SDN     
+LBY     
+IRN     
+MNG     
 ```
 
 3. 
 ```sh
-cut -f 11 countryInfo-clean-clean.txt | sort | uniq | wc -l
-155
+cut -f 12 countryInfo-clean-clean.txt | sort | uniq | wc -l
+81
 ```
 `sort | uniq` : permet d'extraire les lignes uniques seulement ! 
 
@@ -220,25 +233,42 @@ cut -f 9 countryInfo-clean-clean.txt | sort | uniq -c
      14 SA
 ```
 `-c ` : permet de compter les lignes qui se répètent.
+grep "Longueuil" CA-clean.txt | wc -l
+18
 
 ### 5. CA 
 
 1. 
 ```sh
-cut -f 18 CA-clean.txt | sort | uniq | grep -v "N/A" | wc -l
-38
+cut -f 18 CA-clean.txt | sort | uniq -c
+   1129 America/Atikokan
+   1808 America/Blanc-Sablon
+   1633 America/Cambridge_Bay
+     54 America/Chicago
+    126 America/Creston
+     22 America/Dawson
+   1165 America/Dawson_Creek
+     58 America/Denver
+...
 ```
 
 2. 
 ```sh
-grep "Longueuil" CA-clean.txt | wc -l
-18
+ grep "Longueuil" CA-clean.txt 
+ 5893322	Baronnie de Longueuil	Baronnie de Longueuil	N/A	45.40008	-73.34916	LAREA	CA	N/A	10	N/A	N/A	N/A	0	N/A	20	America/Toronto	2006-01-18
+... 
+```
+
+```sh
+ grep "Longueuil" CA-clean.txt | wc -l
+ 18
 ```
 
 3. 
 ```sh
-cut -f 19 CA-clean.txt | grep "2018" | wc -l
-26871
+grep "2018-[0-9][0-9]-[0-9][0-9]$" CA-clean.txt 
+3424953	Virgin Rocks	Virgin Rocks	N/A	46.42886	-50.81995	U	RFUCA	N/A	05	N/A	N/A	N/A	0	N/A	-9999	N/A	2018-02-20
+...
 ```
 
 4. 
